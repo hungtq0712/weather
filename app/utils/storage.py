@@ -24,8 +24,6 @@ import sqlite3
 from app.db_connect import *
 TABLE ="thanhpho"
 def load_database(path: str) -> List[Dict[str, Any]]:
-    if not os.path.exists(path):
-        return []
     #conn = sqlite3.connect(path)
     conn = create_connection()
     #conn.row_factory = sqlite3.Row  # để fetch ra dạng dict-like
@@ -39,14 +37,12 @@ def load_database(path: str) -> List[Dict[str, Any]]:
     conn.close()
     return data
 def update_database(path: str, city: dict[str, Any],id) -> None:
-    if not os.path.exists(path):
-        return []
     #conn = sqlite3.connect(path)
     conn = create_connection()
     #conn.row_factory = sqlite3.Row  # để fetch ra dạng dict-like
     placeholders = ", ".join(["%s"] * len(city))
     cols = list(city.keys())
-    set_clause = ", ".join([f"{c} = ?" for c in cols])
+    set_clause = ", ".join([f"{c} = %s" for c in cols])
     cur = conn.cursor(dictionary=True)
     columns = list(city.keys())
     values = [city[c] for c in columns]
@@ -54,8 +50,6 @@ def update_database(path: str, city: dict[str, Any],id) -> None:
     conn.commit()
     conn.close()
 def delete_database(path: str,id) -> None:
-    if not os.path.exists(path):
-        return []
     #conn = sqlite3.connect(path)
     conn = create_connection()
     cur = conn.cursor(dictionary=True)
@@ -63,8 +57,7 @@ def delete_database(path: str,id) -> None:
     conn.commit()
     conn.close()
 def add_database(path: str,city: Dict[str,Any]) -> None:
-    if not os.path.exists(path):
-        return []
+
     #conn = sqlite3.connect(path)
     conn = create_connection()
     cur = conn.cursor(dictionary=True)
