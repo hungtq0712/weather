@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Hanoi",
+    "country": "VN",
+    "state": null,
+    "lat": 21.03,
+    "lon": 105.85
+  },
+  {
+    "id": 2,
+    "name": "Hanoi",
+    "country": "VN",
+    "state": null,
+    "lat": 21.03,
+    "lon": 105.85
+  },
+  {
+    "id": 3,
+    "name": "Ninhbinh",
+    "country": null,
+    "state": null,
+    "lat": null,
+    "lon": null
+  }
+]

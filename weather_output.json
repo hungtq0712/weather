@@ -1,0 +1,17 @@
+{
+  "location": {
+    "name": "Thành Phố Ninh Bình",
+    "country": "VN"
+  },
+  "weather": {
+    "current": {
+      "temperature": 18.4,
+      "feels_like": 17.52,
+      "humidity": 47,
+      "wind": 1.84,
+      "description": "mây cụm",
+      "observed_at": "2026-01-09T09:34:06+07:00"
+    }
+  },
+  "source": "OpenWeatherMap"
+}
