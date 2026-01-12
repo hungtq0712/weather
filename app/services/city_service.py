@@ -90,7 +90,7 @@ class CityService:
         lon: Optional[float] = None,
     ) -> City:
         name_norm = validate_city(name)
-        id= next_id(self._file_data_base)
+        id= self.next_id()
         city = City(id=id, name=name_norm, country=country, state=state, lat=lat, lon=lon)
         add_database(self._file_data_base, self._city_to_dict(city))
         return city
@@ -108,4 +108,46 @@ class CityService:
     def delete_city(self, city_id: int) -> None:
         delete_database(self._file_data_base, city_id)
     def list_cities(self) -> List[City]:
+
         return [self._dict_to_city(x) for x in load_database(self._file_data_base)]
+
+    def find_by_id(self,id: int) -> Dict[str, Any]:
+
+        conn = create_connection()
+
+        cur = conn.cursor(dictionary=True)
+        cur.execute(f"SELECT * FROM {TABLE} WHERE id={id}")
+        rows = cur.fetchall()
+
+        data = [dict(r) for r in rows]
+
+        conn.close()
+        return data[0]
+
+    def next_id(self) -> int:
+        conn = create_connection()
+        # conn = sqlite3.connect(path)
+        try:
+            cur = conn.cursor()
+
+            # 1) Ưu tiên lấy AUTO_INCREMENT (nếu có)
+            cur.execute(
+                """
+                SELECT AUTO_INCREMENT
+                FROM information_schema.TABLES
+                WHERE TABLE_SCHEMA = DATABASE()
+                  AND TABLE_NAME = %s
+                """,
+                (TABLE,),
+            )
+            row = cur.fetchone()
+            if row and row[0] is not None:
+                return int(row[0])
+
+            # 2) Fallback: MAX(id) + 1
+            cur.execute(f"SELECT COALESCE(MAX(`id`), 0) + 1 FROM `{TABLE}`")
+            (nid,) = cur.fetchone()
+            return int(nid)
+
+        finally:
+            conn.close()

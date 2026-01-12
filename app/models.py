@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Optional, List
-
+from pydantic import BaseModel
 
 # -------- Persist model (CRUD) --------
-@dataclass(frozen=True)
-class City:
+
+class City(BaseModel):
     id: int
     name: str
     country: Optional[str] = None
@@ -59,3 +59,16 @@ class WeatherCurrentResponse:
     location: LocationOut
     current: CurrentOut
     source: str
+
+#---- Fast API -----
+
+
+
+
+class CityFastAPI(BaseModel):
+    id: int
+    name: str
+    country: Optional[str] = None
+    state: Optional[str] = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
